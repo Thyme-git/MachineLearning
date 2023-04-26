@@ -1,0 +1,26 @@
+\contentsline {section}{\numberline {1}实验要求}{3}{section.1}%
+\contentsline {section}{\numberline {2}算法设计与实现}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Adaboost算法}{3}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Adaboost算法实现}{3}{subsubsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.2}分类器需要暴露的接口}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}DecisionTreeStump实现}{5}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}初始化权重以及错误率}{5}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}$DecisionTreeStump::fit(\mathcal {S},\mathcal {D})$接口实现}{5}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}$DecisionTreeStump::predict(\mathbf {x})$接口实现}{7}{subsubsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.4}LogisticRegression实现}{7}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}初始化权重以及错误率}{8}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}$LogisticRegression::fit(\mathcal {S},\mathcal {D})$接口实现}{8}{subsubsection.2.4.2}%
+\contentsline {subsubsection}{\numberline {2.4.3}$LogisticRegression::predict(\mathbf {x})$接口实现}{10}{subsubsection.2.4.3}%
+\contentsline {section}{\numberline {3}实验环境与平台}{10}{section.3}%
+\contentsline {section}{\numberline {4}结果与分析}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}测试数据说明}{11}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}交折验证的方法}{11}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}基于DecsionTreeStump分类器的Adaboost算法结果}{12}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}基于LogisitcRegression分类器的Adaboost算法结果}{13}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}结果分析}{15}{subsection.4.5}%
+\contentsline {subsubsection}{\numberline {4.5.1}以DecisionTreeStump作为基分类器的结果}{15}{subsubsection.4.5.1}%
+\contentsline {subsubsection}{\numberline {4.5.2}以LogisticRegression作为分类算法的结果}{15}{subsubsection.4.5.2}%
+\contentsline {subsubsection}{\numberline {4.5.3}LogisticRegression作为分类器表现差的原因}{15}{subsubsection.4.5.3}%
+\contentsline {section}{\numberline {5}个人体会}{16}{section.5}%
+\contentsline {subsection}{\numberline {5.1}我对Adaboost算法的新认识}{16}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}基分类器类型，超参数设置对模型性能的影响}{16}{subsection.5.2}%

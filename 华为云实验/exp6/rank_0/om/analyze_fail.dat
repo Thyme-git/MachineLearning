@@ -1,0 +1,264 @@
+# 1.This file shows the parsed IR info when graph evaluating failed to help find the problem.
+# 2.You can search the last `------------------------>` to the node which is inferred failed.
+# 3.Refer to https://www.mindspore.cn/search?inputValue=analyze_fail.dat to get more instructions.
+# ===============================================================================
+
+# [No.1] Default_wrapper.7
+# In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:379/    def construct(self, *inputs):/
+funcgraph fg_7(
+        %para1 : Tensor(F32)[32, 1, 32, 32]    # inputs0
+        , %para2 : Tensor(I32)[32]    # inputs1
+        , %para3 : Ref[Tensor(F32)][1, 10, 84]    # rbf_w
+        , %para4 : Ref[Tensor(F32)][6, 1, 5, 5]    # conv1.weight
+        , %para5 : Ref[Tensor(F32)][6]    # conv1.bias
+        , %para6 : Ref[Tensor(F32)][16, 6, 5, 5]    # conv2.weight
+        , %para7 : Ref[Tensor(F32)][16]    # conv2.bias
+        , %para8 : Ref[Tensor(F32)][120, 16, 5, 5]    # conv3.weight
+        , %para9 : Ref[Tensor(F32)][120]    # conv3.bias
+        , %para10 : Ref[Tensor(F32)][84, 120]    # fc.weight
+        , %para11 : Ref[Tensor(F32)][84]    # fc.bias
+        , %para12 : Ref[Tensor(F32)][1, 10, 84]    # moments.rbf_w
+        , %para13 : Ref[Tensor(F32)][6, 1, 5, 5]    # moments.conv1.weight
+        , %para14 : Ref[Tensor(F32)][6]    # moments.conv1.bias
+        , %para15 : Ref[Tensor(F32)][16, 6, 5, 5]    # moments.conv2.weight
+        , %para16 : Ref[Tensor(F32)][16]    # moments.conv2.bias
+        , %para17 : Ref[Tensor(F32)][120, 16, 5, 5]    # moments.conv3.weight
+        , %para18 : Ref[Tensor(F32)][120]    # moments.conv3.bias
+        , %para19 : Ref[Tensor(F32)][84, 120]    # moments.fc.weight
+        , %para20 : Ref[Tensor(F32)][84]    # moments.fc.bias
+        , %para21 : Ref[Tensor(F32)][]    # momentum
+        , %para22 : Ref[Tensor(F32)][]    # learning_rate
+        , %para23 : Ref[Tensor(I32)][1]    # global_step
+    ) {
+    %1 : Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)) = Primitive::MakeTuple{prim_type=1}(%para1, %para2)    #(Tensor(F32)[32, 1, 32, 32], Tensor(I32)[32]) #scope: Default
+#[CNode]21
+
+#------------------------> 0
+    %2 = UnpackCall::unpack_call(FuncGraph::fg_22, %1)    #(FuncNoShape, Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)))    # fg_22=Default.22 #scope: Default
+#[CNode]23
+    Primitive::Return{prim_type=1}(%2)    #(Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:385/        return loss/#[CNode]24
+}
+# order:
+#   1: @Default_wrapper.7:[CNode]23{[0]: ValueNode<UnpackCall> unpack_call.25, [1]: ValueNode<FuncGraph> Default.22, [2]: [CNode]21}
+#   2: @Default_wrapper.7:[CNode]24{[0]: ValueNode<Primitive> Return, [1]: [CNode]23}
+
+
+# [No.2] UnpackCall.8
+
+funcgraph fg_8(
+        %para24 : FuncNoShape    # 9
+        , %para25 : Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32))    # 10
+    ) {
+    %1 : Tensor(F32)[32, 1, 32, 32] = Primitive::TupleGetItem{prim_type=1}(%para25, I64(0))    #(Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)), I64NoShape) #scope: Default
+#26
+    %2 : Tensor(I32)[32] = Primitive::TupleGetItem{prim_type=1}(%para25, I64(1))    #(Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)), I64NoShape) #scope: Default
+#27
+
+#------------------------> 1
+    %3 = %para24(%1, %2)    #(Tensor(F32)[32, 1, 32, 32], Tensor(I32)[32]) #scope: Default
+#28
+    Primitive::Return{prim_type=1}(%3)    #(Undefined) #scope: Default
+#29
+}
+# order:
+#   1: @UnpackCall.8:28{[0]: 9, [1]: 26, [2]: 27}
+#   2: @UnpackCall.8:29{[0]: ValueNode<Primitive> Return, [1]: 28}
+
+
+# [No.3] Default.11
+# In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:379/    def construct(self, *inputs):/
+funcgraph fg_11[fg_7](
+        %para26 : Tensor(F32)[32, 1, 32, 32]    # inputs0
+        , %para27 : Tensor(I32)[32]    # inputs1
+    ) {
+    %1 : Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)) = Primitive::MakeTuple{prim_type=1}(%para26, %para27)    #(Tensor(F32)[32, 1, 32, 32], Tensor(I32)[32]) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:379/    def construct(self, *inputs):/#[CNode]30
+
+#------------------------> 2
+    %2 = UnpackCall::unpack_call(FuncGraph::fg_15, %1)    #(FuncNoShape, Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)))    # fg_15=WithLossCell.15 #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:380/        loss = self.network(*inputs)/#loss
+    %3 = Primitive::getattr{prim_type=1}(%2, "dtype")    #(Undefined, Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:381/        sens = F.fill(loss.dtype, loss.shape, self.sens)/#[CNode]31
+    %4 = Primitive::getattr{prim_type=1}(%2, "shape")    #(Undefined, Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:381/        sens = F.fill(loss.dtype, loss.shape, self.sens)/#[CNode]32
+    %5 = FuncGraph::fg_33(%3, %4, F32(1))    #(Undefined, Undefined, Undefined)    # fg_33=fill.33 #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:381/        sens = F.fill(loss.dtype, loss.shape, self.sens)/#sens
+    %6 = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(%5)    #(Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:382/        grads = self.grad(self.network, self.weights)(*inputs, sens)/#[CNode]34
+    %7 = UnpackGraphPrimitive::UnpackGraph{prim_type=1}(FuncGraph::fg_15, %1, %6)    #(Undefined, Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)), Undefined)    # fg_15=WithLossCell.15 #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:382/        grads = self.grad(self.network, self.weights)(*inputs, sens)/#grads
+    %8 = Primitive::MakeTuple{prim_type=1}(%para3, %para4, %para5, %para6, %para7, %para8, %para9, %para10, %para11)    #(Ref[Tensor(F32)][1, 10, 84], Ref[Tensor(F32)][6, 1, 5, 5], Ref[Tensor(F32)][6], Ref[Tensor(F32)][16, 6, 5, 5], Ref[Tensor(F32)][16], Ref[Tensor(F32)][120, 16, 5, 5], Ref[Tensor(F32)][120], Ref[Tensor(F32)][84, 120], Ref[Tensor(F32)][84]) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:382/        grads = self.grad(self.network, self.weights)(*inputs, sens)/#[CNode]35
+    %9 = DoSignaturePrimitive::S-Prim-grad{prim_type=1}(%7, %8)    #(Undefined, Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:382/        grads = self.grad(self.network, self.weights)(*inputs, sens)/#grads
+    %10 = UnpackCall::unpack_call(%9, %1, %6)    #(Undefined, Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)), Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:382/        grads = self.grad(self.network, self.weights)(*inputs, sens)/#grads
+    %11 = DoSignaturePrimitive::S-Prim-identity{prim_type=1}[side_effect_propagate=I64(1)](%10)    #(Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:383/        grads = self.grad_reducer(grads)/#grads
+    %12 = FuncGraph::fg_36(%11)    #(Undefined)    # fg_36=Momentum.36 #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:384/        loss = F.depend(loss, self.optimizer(grads))/#[CNode]37
+    %13 = DoSignaturePrimitive::S-Prim-Depend{prim_type=1}[side_effect_propagate=I64(1)](%2, %12)    #(Undefined, Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:384/        loss = F.depend(loss, self.optimizer(grads))/#loss
+    Primitive::Return{prim_type=1}(%13)    #(Undefined) #scope: Default
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:385/        return loss/#[CNode]38
+}
+# order:
+#   1: @Default.11:loss{[0]: ValueNode<UnpackCall> unpack_call.39, [1]: ValueNode<FuncGraph> WithLossCell.15, [2]: [CNode]30}
+#   2: @Default.11:[CNode]31{[0]: ValueNode<Primitive> getattr, [1]: loss, [2]: ValueNode<StringImm> dtype}
+#   3: @Default.11:[CNode]32{[0]: ValueNode<Primitive> getattr, [1]: loss, [2]: ValueNode<StringImm> shape}
+#   4: @Default.11:sens{[0]: ValueNode<FuncGraph> fill.33, [1]: [CNode]31, [2]: [CNode]32, [3]: ValueNode<FP32Imm> 1.000000}
+#   5: @Default.11:[CNode]34{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: sens}
+#   6: @Default.11:grads{[0]: ValueNode<UnpackGraphPrimitive> UnpackGraph, [1]: ValueNode<FuncGraph> WithLossCell.15, [2]: [CNode]30, [3]: [CNode]34}
+#   7: @Default.11:grads{[0]: ValueNode<DoSignaturePrimitive> S-Prim-grad, [1]: grads, [2]: [CNode]35}
+#   8: @Default.11:grads{[0]: ValueNode<UnpackCall> unpack_call.40, [1]: grads, [2]: [CNode]30, [3]: [CNode]34}
+#   9: @Default.11:grads{[0]: ValueNode<DoSignaturePrimitive> S-Prim-identity, [1]: grads}
+#  10: @Default.11:[CNode]37{[0]: ValueNode<FuncGraph> Momentum.36, [1]: grads}
+#  11: @Default.11:loss{[0]: ValueNode<DoSignaturePrimitive> S-Prim-Depend, [1]: loss, [2]: [CNode]37}
+#  12: @Default.11:[CNode]38{[0]: ValueNode<Primitive> Return, [1]: loss}
+
+
+# [No.4] UnpackCall.12
+
+funcgraph fg_12(
+        %para28 : FuncNoShape    # 13
+        , %para29 : Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32))    # 14
+    ) {
+    %1 : Tensor(F32)[32, 1, 32, 32] = Primitive::TupleGetItem{prim_type=1}(%para29, I64(0))    #(Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)), I64NoShape) #scope: Default
+#41
+    %2 : Tensor(I32)[32] = Primitive::TupleGetItem{prim_type=1}(%para29, I64(1))    #(Tuple[Tensor(F32),Tensor(I32)]TupleShape((32, 1, 32, 32), (32)), I64NoShape) #scope: Default
+#42
+
+#------------------------> 3
+    %3 = %para28(%1, %2)    #(Tensor(F32)[32, 1, 32, 32], Tensor(I32)[32]) #scope: Default
+#43
+    Primitive::Return{prim_type=1}(%3)    #(Undefined) #scope: Default
+#44
+}
+# order:
+#   1: @UnpackCall.12:43{[0]: 13, [1]: 41, [2]: 42}
+#   2: @UnpackCall.12:44{[0]: ValueNode<Primitive> Return, [1]: 43}
+
+
+# [No.5] WithLossCell.15
+# In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:116/    def construct(self, data, label):/
+funcgraph fg_15[fg_7](
+        %para30 : Tensor(F32)[32, 1, 32, 32]    # data
+        , %para31 : Tensor(I32)[32]    # label
+    ) {
+
+#------------------------> 4
+    %1 = FuncGraph::fg_16(%para30)    #(Tensor(F32)[32, 1, 32, 32])    # fg_16=LeNet5.16 #scope: Default/network-WithLossCell
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:117/        out = self._backbone(data)/#out
+    %2 = FuncGraph::fg_45(%1, %para31)    #(Undefined, Tensor(I32)[32])    # fg_45=SoftmaxCrossEntropyWithLogits.45 #scope: Default/network-WithLossCell
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:118/        return self._loss_fn(out, label)/#[CNode]46
+    Primitive::Return{prim_type=1}(%2)    #(Undefined) #scope: Default/network-WithLossCell
+      # In file /home/thyme/.conda/envs/xingtian_py39/lib/python3.7/site-packages/mindspore/nn/wrap/cell_wrapper.py:118/        return self._loss_fn(out, label)/#[CNode]47
+}
+# order:
+#   1: @WithLossCell.15:out{[0]: ValueNode<FuncGraph> LeNet5.16, [1]: data}
+#   2: @WithLossCell.15:[CNode]46{[0]: ValueNode<FuncGraph> SoftmaxCrossEntropyWithLogits.45, [1]: out, [2]: label}
+#   3: @WithLossCell.15:[CNode]47{[0]: ValueNode<Primitive> Return, [1]: [CNode]46}
+
+
+# [No.6] LeNet5.16
+# In file mnist_experiment.py:116/    def construct(self, x):/
+funcgraph fg_16[fg_7](
+        %para32 : Tensor(F32)[32, 1, 32, 32]    # x
+    ) {
+    %1 : Tensor(F32)[32, 6, 28, 28] = FuncGraph::fg_48(%para32)    #(Tensor(F32)[32, 1, 32, 32])    # fg_48=Conv2d.48 #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:120/        x = self.relu1(self.conv1(x))/#[CNode]49
+    %2 : Tensor(F32)[32, 6, 28, 28] = FuncGraph::fg_50(%1)    #(Tensor(F32)[32, 6, 28, 28])    # fg_50=ReLU.50 #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:120/        x = self.relu1(self.conv1(x))/#x
+    %3 : Tensor(F32)[32, 6, 14, 14] = FuncGraph::fg_51(%2)    #(Tensor(F32)[32, 6, 28, 28])    # fg_51=MaxPool2d.51 #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:121/        x = self.max_pool1(x)/#x
+    %4 : Tensor(F32)[32, 16, 10, 10] = FuncGraph::fg_52(%3)    #(Tensor(F32)[32, 6, 14, 14])    # fg_52=Conv2d.52 #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:123/        x = self.relu2(self.conv2(x))/#[CNode]53
+    %5 : Tensor(F32)[32, 16, 10, 10] = FuncGraph::fg_54(%4)    #(Tensor(F32)[32, 16, 10, 10])    # fg_54=ReLU.54 #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:123/        x = self.relu2(self.conv2(x))/#x
+    %6 : Tensor(F32)[32, 16, 5, 5] = FuncGraph::fg_55(%5)    #(Tensor(F32)[32, 16, 10, 10])    # fg_55=MaxPool2d.55 #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:124/        x = self.max_pool2(x)/#x
+    %7 : Tensor(F32)[32, 120, 1, 1] = FuncGraph::fg_56(%6)    #(Tensor(F32)[32, 16, 5, 5])    # fg_56=Conv2d.56 #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:126/        x = self.squeeze(self.conv3(x))/#[CNode]57
+    %8 : Tensor(F32)[32, 120] = DoSignaturePrimitive::S-Prim-Squeeze{prim_type=1}[output_names=["output"], input_names=["x"], axis=(I64(-1), I64(-2))](%7)    #(Tensor(F32)[32, 120, 1, 1]) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:126/        x = self.squeeze(self.conv3(x))/#x
+    %9 : Tensor(F32)[32, 84] = FuncGraph::fg_58(%8)    #(Tensor(F32)[32, 120])    # fg_58=Dense.58 #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:127/        x = self.fc(x)/#x
+    %10 : Tuple[I64*2]TupleShape(NoShape, NoShape) = Primitive::getattr{prim_type=1}(%9, "shape")    #(Tensor(F32)[32, 84], StringNoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:129/        x = self.reshape(x, (x.shape[0], 1, 84))/#[CNode]59
+    %11 : I64NoShape = DoSignaturePrimitive::S-Prim-getitem{prim_type=1}(%10, I64(0))    #(Tuple[I64*2]TupleShape(NoShape, NoShape), I64NoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:129/        x = self.reshape(x, (x.shape[0], 1, 84))/#[CNode]60
+    %12 : Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(%11, I64(1), I64(84))    #(I64NoShape, I64NoShape, I64NoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:129/        x = self.reshape(x, (x.shape[0], 1, 84))/#[CNode]61
+    %13 : Tensor(F32)[32, 1, 84] = DoSignaturePrimitive::S-Prim-Reshape{prim_type=1}[output_names=["output"], input_names=["tensor", "shape"]](%9, %12)    #(Tensor(F32)[32, 84], Tuple[I64*3]TupleShape(NoShape, NoShape, NoShape)) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:129/        x = self.reshape(x, (x.shape[0], 1, 84))/#x
+    %14 : Tensor(F32)[32, 10, 84] = DoSignaturePrimitive::S-Prim-sub{prim_type=1}(%13, %para3)    #(Tensor(F32)[32, 1, 84], Ref[Tensor(F32)][1, 10, 84]) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:130/        x = self.square(x-self.rbf_w)/#[CNode]62
+    %15 : Tensor(F32)[32, 10, 84] = DoSignaturePrimitive::S-Prim-Square{prim_type=1}[output_names=["output"], input_names=["input_x"]](%14)    #(Tensor(F32)[32, 10, 84]) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:130/        x = self.square(x-self.rbf_w)/#x
+    %16 : Tuple[Tensor(F32)]TupleShape((32, 10, 84)) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(%15)    #(Tensor(F32)[32, 10, 84]) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:131/        x = self.reducedSum(x, axis=2)/#[CNode]63
+    %17 : Tuple[String]TupleShape(NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}("axis")    #(StringNoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:131/        x = self.reducedSum(x, axis=2)/#[CNode]64
+    %18 : Tuple[I64]TupleShape(NoShape) = DoSignaturePrimitive::S-Prim-MakeTuple{prim_type=1}(I64(2))    #(I64NoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:131/        x = self.reducedSum(x, axis=2)/#[CNode]65
+    %19 : Dictionary[[axis,],[Int64]]NoShape = DoSignaturePrimitive::S-Prim-make_dict{prim_type=1}(%17, %18)    #(Tuple[String]TupleShape(NoShape), Tuple[I64]TupleShape(NoShape)) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:131/        x = self.reducedSum(x, axis=2)/#[CNode]66
+
+#------------------------> 5
+    %20 = UnpackCall::unpack_call(DoSignaturePrimitive::S-Prim-ReduceSum{prim_type=1}[output_names=["y"], keep_dims=Bool(0), input_names=["input_x", "axis"]], %16, %19)    #(FuncNoShape, Tuple[Tensor(F32)]TupleShape((32, 10, 84)), Dictionary[[axis,],[Int64]]NoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:131/        x = self.reducedSum(x, axis=2)/#x
+    Primitive::Return{prim_type=1}(%20)    #(Undefined) #scope: Default/network-WithLossCell/_backbone-LeNet5
+      # In file mnist_experiment.py:137/        return x/#[CNode]67
+}
+# order:
+#   1: @LeNet5.16:[CNode]49{[0]: ValueNode<FuncGraph> Conv2d.48, [1]: x}
+#   2: @LeNet5.16:x{[0]: ValueNode<FuncGraph> ReLU.50, [1]: [CNode]49}
+#   3: @LeNet5.16:x{[0]: ValueNode<FuncGraph> MaxPool2d.51, [1]: x}
+#   4: @LeNet5.16:[CNode]53{[0]: ValueNode<FuncGraph> Conv2d.52, [1]: x}
+#   5: @LeNet5.16:x{[0]: ValueNode<FuncGraph> ReLU.54, [1]: [CNode]53}
+#   6: @LeNet5.16:x{[0]: ValueNode<FuncGraph> MaxPool2d.55, [1]: x}
+#   7: @LeNet5.16:[CNode]57{[0]: ValueNode<FuncGraph> Conv2d.56, [1]: x}
+#   8: @LeNet5.16:x{[0]: ValueNode<DoSignaturePrimitive> S-Prim-Squeeze, [1]: [CNode]57}
+#   9: @LeNet5.16:x{[0]: ValueNode<FuncGraph> Dense.58, [1]: x}
+#  10: @LeNet5.16:[CNode]59{[0]: ValueNode<Primitive> getattr, [1]: x, [2]: ValueNode<StringImm> shape}
+#  11: @LeNet5.16:[CNode]60{[0]: ValueNode<DoSignaturePrimitive> S-Prim-getitem, [1]: [CNode]59, [2]: ValueNode<Int64Imm> 0}
+#  12: @LeNet5.16:[CNode]61{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: [CNode]60, [2]: ValueNode<Int64Imm> 1, [3]: ValueNode<Int64Imm> 84}
+#  13: @LeNet5.16:x{[0]: ValueNode<DoSignaturePrimitive> S-Prim-Reshape, [1]: x, [2]: [CNode]61}
+#  14: @LeNet5.16:[CNode]62{[0]: ValueNode<DoSignaturePrimitive> S-Prim-sub, [1]: x, [2]: rbf_w}
+#  15: @LeNet5.16:x{[0]: ValueNode<DoSignaturePrimitive> S-Prim-Square, [1]: [CNode]62}
+#  16: @LeNet5.16:[CNode]63{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: x}
+#  17: @LeNet5.16:[CNode]64{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: ValueNode<StringImm> axis}
+#  18: @LeNet5.16:[CNode]65{[0]: ValueNode<DoSignaturePrimitive> S-Prim-MakeTuple, [1]: ValueNode<Int64Imm> 2}
+#  19: @LeNet5.16:[CNode]66{[0]: ValueNode<DoSignaturePrimitive> S-Prim-make_dict, [1]: [CNode]64, [2]: [CNode]65}
+#  20: @LeNet5.16:x{[0]: ValueNode<UnpackCall> unpack_call.68, [1]: ValueNode<DoSignaturePrimitive> S-Prim-ReduceSum, [2]: [CNode]63, [3]: [CNode]66}
+#  21: @LeNet5.16:[CNode]67{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+# [No.7] UnpackCall.17
+
+funcgraph fg_17(
+        %para33 : FuncNoShape    # 18
+        , %para34 : Tuple[Tensor(F32)]TupleShape((32, 10, 84))    # 19
+        , %para35 : Dictionary[[axis,],[Int64]]NoShape    # 20
+    ) {
+    %1 : Tensor(F32)[32, 10, 84] = Primitive::TupleGetItem{prim_type=1}(%para34, I64(0))    #(Tuple[Tensor(F32)]TupleShape((32, 10, 84)), I64NoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+#69
+    %2 : I64NoShape = Primitive::dict_getitem{prim_type=1}(%para35, "axis")    #(Dictionary[[axis,],[Int64]]NoShape, StringNoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+#70
+    %3 : Keyword[key : axisvalue : Int64]NoShape = Primitive::make_keyword_arg{prim_type=1}("axis", %2)    #(StringNoShape, I64NoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+#71
+
+#------------------------> 6
+    %4 = %para33(%1, %3)    #(Tensor(F32)[32, 10, 84], Keyword[key : axisvalue : Int64]NoShape) #scope: Default/network-WithLossCell/_backbone-LeNet5
+#72
+    Primitive::Return{prim_type=1}(%4)    #(Undefined) #scope: Default/network-WithLossCell/_backbone-LeNet5
+#73
+}
+# order:
+#   1: @UnpackCall.17:72{[0]: 18, [1]: 69, [2]: 71}
+#   2: @UnpackCall.17:73{[0]: ValueNode<Primitive> Return, [1]: 72}
+
+
+#===============================================================================
+# num of function graphs in stack: 7/8 (Ignored 1 internal frames).
