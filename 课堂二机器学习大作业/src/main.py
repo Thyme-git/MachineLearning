@@ -31,19 +31,21 @@ def main():
     
     base_list = [1, 5, 10, 100]
     dataReader = DataReader(data_path, target_path)
-    for n_base_classifier in base_list:
-        print(f'ues {n_base_classifier} classifiers:')
-        if args.task == 'train':
+    if args.task == 'train':
+        for i in range(1, 11):
+            print(f'training on fold {i}')
             best_acc = 0
             accuracy = []
-            for i in range(1, 11):
-                adaboost = Adaboost(base_classifier, n_base_classifier)
-                X_train, y_train, index_train,\
-                X_validate , y_validate , index_validate = dataReader.get_train_validate_set(i-1)
+            X_train, y_train, index_train,\
+            X_validate , y_validate , index_validate = dataReader.get_train_validate_set(i-1)
+            
+            adaboost = Adaboost(base_classifier, 100)
+            adaboost.fit(X_train, y_train)
+            
+            for n_base_classifier in base_list:
+                print(f'use {n_base_classifier} classifiers:')
 
-                print(f'training on fold {i}')
-                adaboost.fit(X_train, y_train)
-                y_pred = adaboost.predict(X_validate)
+                y_pred = adaboost.predict(X_validate, n_base_classifier)
     
                 acc = (y_pred == y_validate).sum() / len(y_validate)
                 y_pred[np.argwhere(y_pred == -1.0)] = 0.0
@@ -56,22 +58,23 @@ def main():
                     best_acc = acc
                     adaboost.save_weight(weight_path)
             print(f'Average accuracy : {100*np.array(accuracy).mean():.2f}%')
-        print('')
+            print('')
     
     if args.task == 'predict':
         adaboost = Adaboost(base_classifier)
         adaboost.load_weight(weight_path)
         
         X_test, y_test, index_test = dataReader.get_test_set()
-        y_pred = adaboost.predict(X_test)
+        y_pred = adaboost.predict(X_test, 100)
         
         acc = (y_pred == y_test).sum() / len(y_test)
         
         y_pred[np.argwhere(y_pred == -1.0)] = 0.0
         data_pred = np.hstack([index_test.reshape((-1, 1)), y_pred.reshape((-1, 1))])
         
-        np.savetxt(pred_dir+'/base%d_pred.csv' % (n_base_classifier), data_pred, delimiter=',')
+        np.savetxt(pred_dir+'/pred.csv', data_pred, delimiter=',')
         print(f'Accuracy : {100*acc:.2f}%')
+        print('Prediction output file at '+pred_dir+'/pred.csv')
 
 if __name__ == '__main__':
     main()

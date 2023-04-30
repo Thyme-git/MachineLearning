@@ -3,7 +3,7 @@ import numpy as np
 from DecisionStump import DecisionStump
 from LogisticRegressionClassifier import LogisticRegressionClassifier
 import tqdm
-from warnings import warn
+import warnings
 
 
 class Adaboost(object):
@@ -48,7 +48,7 @@ class Adaboost(object):
             y_pred = clf.fit(X, y, sample_weight, return_pred=True) #? 以样本权重 D_t 训练 h_t
             err = clf.error_rate                                    #? 计算训练集的加权错误率
             if err > 0.5:
-                warn("\n\033[33mAdaboost quit early because error_rate > 0.5\033[0m", RuntimeWarning)
+                warnings.warn("\n\033[33mAdaboost quit early because error_rate > 0.5\033[0m", RuntimeWarning)
                 break
             alpha = 0.5 * np.log((1-err) / (err + 1e-19))
             sample_weight = sample_weight * np.exp(-1.0 * alpha * y * y_pred)
