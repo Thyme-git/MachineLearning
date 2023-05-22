@@ -26,7 +26,7 @@ class BaseClassifier(object):
         '''返回分类器模型的权重'''
         raise NotImplementedError
 
-class DecisionStump(object):
+class DecisionStump(BaseClassifier):
     '''决策树桩实现'''
 
     def __init__(self) -> None:
@@ -56,7 +56,7 @@ class DecisionStump(object):
         if sample_weight is None:
             sample_weight = np.ones(X.shape[0]) / X.shape[0]
         
-        num_steps = 200
+        num_steps = 1000
         for dim in range(X.shape[1]):
             dim_min = np.min(X[:, dim])
             step_size = (np.max(X[:, dim]) - dim_min) / num_steps
@@ -64,7 +64,10 @@ class DecisionStump(object):
             for step in range(num_steps + 1):
                 thredhold = dim_min + step * step_size              #? 当前遍历的遍历的阈值
                 for compare_method in [0, 1]:
-                    y_pred = self.predict(X, compare_method, thredhold, dim)
+                    if compare_method == 0:
+                        y_pred = self.predict(X, compare_method, thredhold, dim)
+                    else:
+                        y_pred = - y_pred
                     err = np.inner((y_pred != y), sample_weight)    #? 计算加权误差
                     if err < self._min_err:                         #? 权重保存
                         self._min_err = err

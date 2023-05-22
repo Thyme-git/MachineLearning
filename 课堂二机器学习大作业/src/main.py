@@ -30,8 +30,8 @@ def main():
     pred_dir            = args.output_dir
     
     base_list = [1, 5, 10, 100]
-    dataReader = DataReader(data_path, target_path)
     if args.task == 'train':
+        dataReader = DataReader(data_path, target_path)
         for i in range(1, 11):
             print(f'training on fold {i}')
             best_acc = 0
@@ -57,23 +57,20 @@ def main():
                 if acc > best_acc:
                     best_acc = acc
                     adaboost.save_weight(weight_path)
-            print(f'Average accuracy : {100*np.array(accuracy).mean():.2f}%')
             print('')
     
     if args.task == 'predict':
+        dataReader = DataReader(data_path, train = False)
         adaboost = Adaboost(base_classifier)
         adaboost.load_weight(weight_path)
         
-        X_test, y_test, index_test = dataReader.get_test_set()
+        X_test = dataReader.get_test_set()
         y_pred = adaboost.predict(X_test, 100)
         
-        acc = (y_pred == y_test).sum() / len(y_test)
-        
         y_pred[np.argwhere(y_pred == -1.0)] = 0.0
-        data_pred = np.hstack([index_test.reshape((-1, 1)), y_pred.reshape((-1, 1))])
+        data_pred = y_pred.reshape((-1, 1))
         
         np.savetxt(pred_dir+'/pred.csv', data_pred, delimiter=',')
-        print(f'Accuracy : {100*acc:.2f}%')
         print('Prediction output file at '+pred_dir+'/pred.csv')
 
 if __name__ == '__main__':

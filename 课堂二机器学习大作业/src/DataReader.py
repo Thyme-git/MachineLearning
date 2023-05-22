@@ -7,9 +7,10 @@ class DataReader(object):
     '''
     def __init__(
             self,
-            data_path   : str = '../data/data.csv',
-            target_path : str = '../data/targets.csv',
-            num_fold    : int = 10
+            data_path   : str  = '../data/data.csv',
+            target_path : str  = '../data/targets.csv',
+            num_fold    : int  = 10,
+            train       : bool = True
         ) -> None:
         '''
             input :
@@ -18,26 +19,34 @@ class DataReader(object):
                 target_path : path for label (y)
                             y : (batch_size, ) containing 0 & 1
         '''
-        X = pd.read_csv(data_path)
-        y = pd.read_csv(target_path)
+        self._train = train
+        
+        if train:
+            X = pd.read_csv(data_path, header=None)
+            y = pd.read_csv(target_path, header=None)
 
-        X     = np.array(X.values)
-        y     = np.array(y.values)
-        index = np.arange(start=1, stop=y.shape[0]+1)
+            X     = np.array(X.values)
+            y     = np.array(y.values)
+            index = np.arange(start=1, stop=y.shape[0]+1)
 
-        data = np.concatenate([X, y, index.reshape((-1, 1))], axis = 1)
-        np.random.shuffle(data)
+            data = np.concatenate([X, y, index.reshape((-1, 1))], axis = 1)
 
-        self._X     = data[:, :-2]
-        self._y     = data[:, -2].reshape(-1)
-        self._index = data[:, -1].reshape(-1)
+            np.random.shuffle(data)
 
-        '''牛马数据集'''
-        self._y[np.argwhere(self._y == 0.0)] = -1.0
+            self._X     = data[:, :-2]
+            self._y     = data[:, -2].reshape(-1)
+            self._index = data[:, -1].reshape(-1)
 
-        self._num_fold = num_fold
-        self._size = self._y.shape[0]
-        self._step_size = int(self._size / self._num_fold)
+            '''牛马数据集'''
+            self._y[np.argwhere(self._y == 0.0)] = -1.0
+
+            self._num_fold = num_fold
+            self._size = self._y.shape[0]
+            self._step_size = int(self._size / self._num_fold)
+        
+        elif not train:
+            X = pd.read_csv(data_path, header=None)
+            self._X = np.array(X.values)
 
 
     def get_train_validate_set(self, fold:int):
@@ -47,6 +56,9 @@ class DataReader(object):
             return :
                 X_train, y_train, index_train, X_validate, y_validate, index_validate
         '''
+        if not self._train:
+            RuntimeError('Can\'t be used in prediction mode\n')
+
         try:
             assert (fold >= 0) and (fold < self._num_fold)
         except:
@@ -68,44 +80,6 @@ class DataReader(object):
         '''
             return the whole set as test set
             return:
-                X_test, y_test, index_test
+                X_test
         '''
-        return self._X, self._y, self._index
-    
-
-
-if __name__ == '__main__':
-    
-    from sklearn.model_selection import StratifiedKFold
-    import scienceplots
-    from LogisticRegressionClassifier import LogisticRegressionClassifier
-    from matplotlib import pyplot as plt
-    plt.style.use('science')
-    def visualize_cv(cv, X, y): 
-        fig, ax = plt.subplots(figsize=(10, 5)) 
-    
-        for ii, (tr, tt) in enumerate(cv.split(X, y)): 
-            p1 = ax.scatter(tr, [ii] * len(tr), c="orangered", marker="_", lw=8) 
-            p2 = ax.scatter(tt, [ii] * len(tt), c="skyblue", marker="_", lw=8) 
-            ax.set( 
-                title='10-Fold Cross Validation', 
-                xlabel="Data Index", 
-                ylabel="Fold", 
-                ylim=[cv.n_splits, -1], 
-            ) 
-            ax.legend([p1, p2], ["Validation","Training"]) 
-    
-        plt.show()
-
-    reader = DataReader()
-    # X_train, y_train, index_train,\
-    # X_validate , y_validate , index_validate = reader.get_train_validate_set(0)
-    # clf = LogisticRegressionClassifier()
-    # clf.fit(X_train, y_train)
-    # y_pred = clf.predict(X_validate)
-    # acc = (y_pred == y_validate).sum() / len(y_validate)
-    # print(acc)
-
-    X, y, index = reader.get_test_set()
-    cv = StratifiedKFold(n_splits=10, shuffle=True) 
-    visualize_cv(cv, X, y)
+        return self._X

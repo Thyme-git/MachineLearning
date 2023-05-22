@@ -1,6 +1,7 @@
 import numpy as np
+from DecisionStump import BaseClassifier
 
-class LogisticRegressionClassifier(object):
+class LogisticRegressionClassifier(BaseClassifier):
     def __init__(self) -> None:
         self._theta = None
         self._err = 1.0
@@ -48,7 +49,7 @@ class LogisticRegressionClassifier(object):
             y:np.ndarray,
             sample_weight : np.ndarray = None,
             return_pred = False,
-            max_iter = 5000,
+            max_iter = 10000,
             lr = 1e-1,
             garma = 0.99
         ):
